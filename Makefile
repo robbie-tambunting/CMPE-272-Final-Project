@@ -1,6 +1,6 @@
 CERTS_DIR = certs
 
-.PHONY: certs testfile clean
+.PHONY: certs keys testfile clean
 
 # Generate project CA + sender + receiver leaf certs (mTLS demo)
 certs:
@@ -26,10 +26,14 @@ certs:
 	rm -f $(CERTS_DIR)/*.csr $(CERTS_DIR)/*.srl
 	@echo "Certs written to $(CERTS_DIR)/"
 
+# Generate sender Ed25519 + receiver X25519 keypairs (Approach B)
+keys:
+	python3 -m approach_b_envelope.keygen
+
 # Create a 64 MB test file (16 × 4 MB chunks — fast, exercises chunking)
 testfile:
 	python3 -c "import os; open('testfile.bin','wb').write(os.urandom(64*1024*1024))"
 	@echo "testfile.bin created (64 MB)"
 
 clean:
-	rm -rf $(CERTS_DIR) testfile.bin recv_a/ recv_b/ broker_store/
+	rm -rf $(CERTS_DIR) keys/ testfile.bin recv_a/ recv_b/ broker_store/

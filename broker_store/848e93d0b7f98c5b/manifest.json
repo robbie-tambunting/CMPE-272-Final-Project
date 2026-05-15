@@ -1,0 +1,34 @@
+{
+  "file_id": "848e93d0b7f98c5b",
+  "filename": "testfile.bin",
+  "total_size": 67108864,
+  "chunk_size": 4194304,
+  "chunk_count": 16,
+  "chunk_hashes": [
+    "228df361078fedacc31f85fa837349e9009e43492d5a62501d73251b2389a2d5",
+    "b5ef73edb85f164a8c82bb553fdec0ce5fe16b3df09c2405268e7a40498d5347",
+    "173818e9cdc696cb19aae22c35e5ff3900ace84fc0bb7d6f9a2b131513fc50d0",
+    "4c100f2f0165c2fd8fad1a007c9e7fe2a8bc0b3b6930c38220dd78b1f137b636",
+    "bff8c29028a880ce1f00a6be42f185cc12e497b4ede41065940e5de425e7b6e3",
+    "4888132286b2c5c9abbcfa0ef96790200336564f01a27aaa0730703398245918",
+    "90b00389e9ccfa0e0cad21f2816c5b04a0a46ff01d1aca1e449cb02afa974719",
+    "54516d839347cee4f990bc461bc6fe3833f37a278fd4e7a45b3b85d3f1a35543",
+    "03dc8d6db2d14c7e056f1a6417cdfd9c7663ef543dfaaf1ae18a7313da111f8c",
+    "e304856e3fde0b131406f570c0d21bd913346acfb691dc522d0aa4d8890751eb",
+    "1f1c71dd9b5b92655aae3eee7e119ca861eb0c7ef1c96c35f81292d5e8cdd484",
+    "eb741ed84223cd5f04e9c89106a5de5589af47bf215191bcf64bdf04c2e581b1",
+    "033b427edb14b2e3057dc5c88e54a1852a0d767f69187c59806e8f972c67aced",
+    "34f3fe33b835b1d1835f5fe9b76589967d063268bebcc169c7e9835f0f801922",
+    "697202c80a33b6e678a9fa59ce8caf36ff15bf4682db6f9cb07e68ad4cb541f1",
+    "d84b94ed2a141454ce0e1ecca5c25867acd2cf7d4b547086af9de4492fe4455e"
+  ],
+  "total_sha256": "ef4608581d0e3f5eb20441d40894c12810bc907816e07307fff03d9f24f0e230",
+  "suite": {
+    "kem": "X25519",
+    "kdf": "HKDF-SHA256",
+    "enc": "AES-256-GCM"
+  },
+  "sender_ephemeral_pub": "M8EJ7rfAQbTiKmYmLlKP/7+giX+gSAWBH0OCJtZocBg=",
+  "receiver_key_fingerprint": "10eb73dde277c9a6b5f3d7dc98458cd0b256985216151ef8de89ada23b1cf4f9",
+  "sender_signing_fingerprint": "16319b999f833c33bb988927fae5eaf3b8f3766ca4243238cc98558d7011135e"
+}
