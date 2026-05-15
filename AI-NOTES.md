@@ -64,6 +64,7 @@ Used to configure the hook in [.claude/settings.json](.claude/settings.json). Th
 ## Human Decided Plan Improvements
 1. Plan did not specify exact implementation of crypto hash function. I told it to use SHA-256 specifically
 2. The pytest unit tests did not have guidance on what size files to use. Given the specs, the agent could run with 4GB file transfers for each unit test. For these tests, instead we will be using smaller file sizes. The main 4GB transfer is reserved for demo purposes
+3. Reviewed the test cases for the SHA-256 hash helper function (`tests/test_hashing.py`) and verified the tests are sufficient for checking the hash algorithm function
 
 ---
 
@@ -144,3 +145,11 @@ implement just phase 0, the shared crypto helper
 
 <ide_opened_file>The user opened the file /Users/tambunting/coding-projects/school/cmpe-272/CMPE-272-Final-Project/tests/test_hashing.py in the IDE. This may or may not be related to the current task.</ide_opened_file>
 state what each of the test cases in test_hashing.py does
+
+### 2026-05-14 17:56 — claude-sonnet-4-6
+
+/update-config add note stating we reviewed test cases for hash function and verified the tests are sufficient for checking the hash algorithm function
+
+### 2026-05-14 17:57 — claude-sonnet-4-6
+
+great, implement approach a (phase 1)
