@@ -66,6 +66,59 @@ Used to configure the hook in [.claude/settings.json](.claude/settings.json). Th
 2. The pytest unit tests did not have guidance on what size files to use. Given the specs, the agent could run with 4GB file transfers for each unit test. For these tests, instead we will be using smaller file sizes. The main 4GB transfer is reserved for demo purposes
 3. Reviewed the test cases for the SHA-256 hash helper function (`tests/test_hashing.py`) and verified the tests are sufficient for checking the hash algorithm function
 
+## Bug Fixes
+
+### Approach B: Atomic Output File Write (`approach_b_envelope/receiver.py`)
+
+**Problem:** The receiver wrote directly to the final output path during the download loop. If any failure occurred mid-transfer (chunk hash mismatch, decryption error, network error, or the final whole-file SHA-256 check), a partial file was left on disk at the destination path with the real filename — indistinguishable from a complete, valid transfer.
+
+**Fix:** Write to a `.tmp` sibling file first, then atomically rename to the final path only after all verification passes.
+
+```python
+tmp_path = out_path.with_suffix(out_path.suffix + ".tmp")
+try:
+    with open(tmp_path, "wb") as out_f:
+        # ... download and verify chunks ...
+    # verify whole-file hash against tmp_path
+    tmp_path.rename(out_path)   # atomic on same filesystem
+except Exception:
+    tmp_path.unlink(missing_ok=True)   # delete partial on any failure
+    raise
+```
+
+Key properties of this approach:
+- `Path.rename()` is atomic on the same filesystem (POSIX `rename(2)`), so the final file is either complete or absent — never partial.
+- The `except` clause catches every failure mode (including the whole-file hash check) and removes the `.tmp` file before re-raising, preventing quarantined partials from accumulating.
+- `missing_ok=True` means cleanup never raises a secondary exception if the file was never created.
+
+---
+
+## Threat Model Analysis
+
+**Passive Eavesdropping (Confidentiality)**
+* **Approach A (mTLS):** TLS 1.3 encrypts the entire stream; keys never cross the wire in plaintext.
+* **Approach B (Envelope):** File is encrypted locally with an ephemeral file key derived via X25519; broker only sees ciphertext.
+
+**Active MITM Tampering (Integrity)**
+* **Approach A:** TLS record auth catches network tampering. Final SHA-256 hash check ensures no logical truncation.
+* **Approach B:** AES-GCM tags detect chunk tampering. Signed manifest ensures no chunks are swapped. Atomic `.tmp` rename guarantees no partial corrupt files.
+
+**Spoofing Sender/Receiver (Authenticity)**
+* **Approach A:** mTLS handshakes verify both parties against the pinned project CA. Fails closed on bad certs.
+* **Approach B:** Manifest is signed by Sender's Ed25519 key and verified by Receiver. Only the true Receiver's X25519 key can derive the decryption key.
+
+**Replay Attacks (Integrity/Authenticity)**
+* **Approach A:** TLS 1.3 natively generates fresh session keys, rejecting old TCP replays immediately.
+* **Approach B:** Each transfer uses a fresh ephemeral X25519 keypair and file ID. Chunks are bound to this ID in the AES-GCM AAD.
+
+**Connection Drops (Availability)**
+* **Approach A:** Receiver tracks contiguous bytes in a `.state` file; sender resumes from that offset on reconnect.
+* **Approach B:** Independent 4 MB chunks are retrieved via HTTP. Receiver simply resumes downloading missing chunks.
+
+**Untrusted Broker (Confidentiality/Integrity)**
+* **Approach A:** Direct connection, no broker involved.
+* **Approach B:** Broker only stores ciphertext and signatures. Compromise yields no plaintext or keys.
+
 ---
 
 ## Prompts
