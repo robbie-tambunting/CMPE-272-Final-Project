@@ -57,6 +57,8 @@ Used to configure the hook in [.claude/settings.json](.claude/settings.json). Th
 
 -  At 5:20 PM (17:20), Claude Code temporarily went down due to a server error. As a result, we switched to using Cursor, utilizing the Gemini 3.1 Pro and GPT 5.5 models instead.
 
+- Claude came back online at 5:40 PM PST (17:40).
+
 - GPT 5.5 Was used against Claude's Plan to run a check against it.
 
 ## Human Decided Plan Improvements
@@ -113,3 +115,32 @@ testing is claude down right now
 ### 2026-05-14 17:21 — claude-sonnet-4-6
 
 testing is claude down right now
+
+### 2026-05-14 17:39 — claude-sonnet-4-6
+
+<ide_opened_file>The user opened the file /Users/tambunting/coding-projects/school/cmpe-272/CMPE-272-Final-Project/AI-NOTES.md in the IDE. This may or may not be related to the current task.</ide_opened_file>
+testing
+
+### 2026-05-14 17:40 — claude-sonnet-4-6
+
+/update-config add a note in the Human notes section stating Claude came back online 5:40PM PST
+
+### 2026-05-14 17:42 — claude-sonnet-4-6
+
+<ide_opened_file>The user opened the file /Users/tambunting/coding-projects/school/cmpe-272/CMPE-272-Final-Project/AI-NOTES.md in the IDE. This may or may not be related to the current task.</ide_opened_file>
+Create a plan for the following. We already have a GPT 5.5 generate plan for this file, but we need a few additions. 
+
+add the following additions to the plan in the right order
+
+1. Create a SHA 256 helper function for use in both approaches
+2. ensure approach A is built first, then approach B
+3. Add a deferred frontend phase (likely next.js for ease and popularity)
+
+### 2026-05-14 17:49 — claude-sonnet-4-6
+
+implement just phase 0, the shared crypto helper
+
+### 2026-05-14 17:50 — claude-sonnet-4-6
+
+<ide_opened_file>The user opened the file /Users/tambunting/coding-projects/school/cmpe-272/CMPE-272-Final-Project/tests/test_hashing.py in the IDE. This may or may not be related to the current task.</ide_opened_file>
+state what each of the test cases in test_hashing.py does
