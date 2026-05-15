@@ -28,7 +28,7 @@
     "kdf": "HKDF-SHA256",
     "enc": "AES-256-GCM"
   },
-  "sender_ephemeral_pub": "M8EJ7rfAQbTiKmYmLlKP/7+giX+gSAWBH0OCJtZocBg=",
+  "sender_ephemeral_pub": "aQNIFKkVXkGAN2zlwb15FVitH6brwkgU7PuLlspJWDQ=",
   "receiver_key_fingerprint": "10eb73dde277c9a6b5f3d7dc98458cd0b256985216151ef8de89ada23b1cf4f9",
   "sender_signing_fingerprint": "16319b999f833c33bb988927fae5eaf3b8f3766ca4243238cc98558d7011135e"
 }
