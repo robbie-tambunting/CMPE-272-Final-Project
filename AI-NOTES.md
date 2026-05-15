@@ -166,3 +166,12 @@ great, design a simple Next.js frontend for testing each approach
 ### 2026-05-14 18:29 — claude-sonnet-4-6
 
 do not add a new design3.md, go off the plan and implement the deferred frontend plan
+
+### 2026-05-14 18:40 — claude-sonnet-4-6
+
+<ide_opened_file>The user opened the file /Users/tambunting/coding-projects/school/cmpe-272/CMPE-272-Final-Project/DESIGN1.md in the IDE. This may or may not be related to the current task.</ide_opened_file>
+in approach b, we have an issue where if a file eing written fails, it partially writes the file on disk under a final name. we want failure to delete or quarantine the partial output instead
+
+### 2026-05-14 18:41 — claude-sonnet-4-6
+
+/update-config Add a section explaining this fix in the AI_NOTES.md

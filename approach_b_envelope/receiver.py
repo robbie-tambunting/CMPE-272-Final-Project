@@ -89,36 +89,43 @@ def main() -> None:
     # ── download, decrypt, write ───────────────────────────────────────────────
     out_path: Path = args.out
     out_path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path = out_path.with_suffix(out_path.suffix + ".tmp")
 
-    with open(out_path, "wb") as out_f:
-        for i in range(chunk_count):
-            ciphertext = _get(args.broker, f"{file_id}/chunk_{i:06d}")
-            plaintext = decrypt_chunk(file_key, i, ciphertext, file_id)
+    try:
+        with open(tmp_path, "wb") as out_f:
+            for i in range(chunk_count):
+                ciphertext = _get(args.broker, f"{file_id}/chunk_{i:06d}")
+                plaintext = decrypt_chunk(file_key, i, ciphertext, file_id)
 
-            # Per-chunk integrity: verify plaintext hash from signed manifest
-            actual_chunk_hash = sha256_bytes(plaintext)
-            if actual_chunk_hash != chunk_hashes[i]:
-                raise RuntimeError(
-                    f"Chunk {i} hash mismatch: "
-                    f"expected={chunk_hashes[i]} got={actual_chunk_hash}"
+                # Per-chunk integrity: verify plaintext hash from signed manifest
+                actual_chunk_hash = sha256_bytes(plaintext)
+                if actual_chunk_hash != chunk_hashes[i]:
+                    raise RuntimeError(
+                        f"Chunk {i} hash mismatch: "
+                        f"expected={chunk_hashes[i]} got={actual_chunk_hash}"
+                    )
+
+                out_f.write(plaintext)
+                pct = (i + 1) / chunk_count * 100
+                print(
+                    f"  [{pct:5.1f}%] chunk {i}"
+                    f" ({len(plaintext):,} bytes plaintext)",
+                    flush=True,
                 )
 
-            out_f.write(plaintext)
-            pct = (i + 1) / chunk_count * 100
-            print(
-                f"  [{pct:5.1f}%] chunk {i}"
-                f" ({len(plaintext):,} bytes plaintext)",
-                flush=True,
+        # ── whole-file integrity ───────────────────────────────────────────────
+        print("Verifying whole-file SHA-256…")
+        actual_total = sha256_file(tmp_path)
+        if actual_total != total_sha256:
+            raise RuntimeError(
+                f"Whole-file hash mismatch: "
+                f"expected={total_sha256} got={actual_total}"
             )
 
-    # ── whole-file integrity ───────────────────────────────────────────────────
-    print("Verifying whole-file SHA-256…")
-    actual_total = sha256_file(out_path)
-    if actual_total != total_sha256:
-        raise RuntimeError(
-            f"Whole-file hash mismatch: "
-            f"expected={total_sha256} got={actual_total}"
-        )
+        tmp_path.rename(out_path)
+    except Exception:
+        tmp_path.unlink(missing_ok=True)
+        raise
 
     print(f"OK  →  {out_path}")
 
