@@ -21,7 +21,12 @@ def handle_client(conn: ssl.SSLSocket, out_dir: Path) -> None:
     hello = json.loads(payload)
     file_id = hello["file_id"]
     total_size = hello["total_size"]
-    filename = hello["filename"]
+    
+    # Sanitize the filename to prevent path traversal
+    filename = Path(hello["filename"]).name
+    if not filename or filename in (".", ".."):
+        raise ValueError(f"Invalid filename provided: {hello['filename']}")
+        
     expected_hash = hello["sha256"]
     print(f"Incoming: {filename!r} ({total_size:,} bytes)  file_id={file_id}")
 
