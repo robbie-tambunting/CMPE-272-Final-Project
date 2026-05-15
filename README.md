@@ -69,6 +69,18 @@ Create a test file to be transferred. The `Makefile` generates a 64 MB test file
 make testfile
 ```
 
+**Note on 4 GB Payload File:**  
+The frontend UI is designed to dynamically detect and use a 4 GB payload file (`payload.bin`) if it exists in the root of the project. Because a 4 GB file is too large to commit to the repository, you must generate it yourself if you wish to test with it. If `payload.bin` is not present, the frontend will fall back to using the generated 64 MB `testfile.bin`.
+
+To generate a 4 GB payload file manually, run:
+
+```bash
+# macOS/Linux
+dd if=/dev/urandom of=payload.bin bs=1048576 count=4096
+# Or using Python
+python3 -c "import os; open('payload.bin','wb').write(os.urandom(4*1024*1024*1024))"
+```
+
 ---
 
 ## 4. Approach A: mTLS 1.3 Direct Streaming
