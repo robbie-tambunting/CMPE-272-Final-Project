@@ -11,6 +11,17 @@ export default function ApproachAPage() {
   const logRef = useRef<HTMLPreElement>(null);
 
   useEffect(() => {
+    fetch("/api/check-file?file=payload.bin")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.exists) {
+          setFile("./payload.bin");
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
     if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
   }, [log]);
 

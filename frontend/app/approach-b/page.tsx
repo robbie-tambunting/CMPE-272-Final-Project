@@ -25,6 +25,18 @@ export default function ApproachBPage() {
   const send = useNdjsonRun();
   const recv = useNdjsonRun();
 
+  useEffect(() => {
+    fetch("/api/check-file?file=payload.bin")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.exists) {
+          setFile("./payload.bin");
+          setOut("./recv_b/payload.bin");
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   const sendLogRef = useRef<HTMLPreElement>(null);
   const recvLogRef = useRef<HTMLPreElement>(null);
   useEffect(() => {
